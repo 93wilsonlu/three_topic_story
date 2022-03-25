@@ -1,1 +1,1 @@
-web: gunicorn app:app
+web: gunicorn three_topic_story:app
