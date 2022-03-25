@@ -5,8 +5,17 @@ name = "pypi"
 
 [packages]
 flask = "*"
+flask-wtf = "*"
+flask-migrate = "*"
+flask-login = "*"
+flask-mail = "*"
+flask-jwt-extended = "*"
+flask-bcrypt = "*"
+bootstrap-flask = "*"
 
 [dev-packages]
+autopep8 = "*"
+flake8 = "*"
 
 [requires]
 python_version = "3.9"
