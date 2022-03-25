@@ -13,6 +13,7 @@ flask-jwt-extended = "*"
 flask-bcrypt = "*"
 bootstrap-flask = "*"
 email-validator = "*"
+gunicorn = "*"
 
 [dev-packages]
 autopep8 = "*"
