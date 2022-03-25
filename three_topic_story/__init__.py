@@ -9,9 +9,20 @@ from flask_jwt_extended import JWTManager
 from .config import Config
 
 app = Flask(__name__)
-bootstrap = Bootstrap5(app)
 app.config.from_object(Config)
 
+db = SQLAlchemy(app)
+bootstrap = Bootstrap5(app)
+bcrypt = Bcrypt(app)
+migrate = Migrate(app, db)
+mail = Mail(app)
+login = LoginManager(app)
+jwt = JWTManager(app)
+
 # import all app
-from three_topic_story.main import main_blueprint
-app.register_blueprint(main_blueprint)
+from three_topic_story.main import main
+app.register_blueprint(main)
+from three_topic_story.account import account
+app.register_blueprint(account, url_prefix='/account')
+
+from . import commands

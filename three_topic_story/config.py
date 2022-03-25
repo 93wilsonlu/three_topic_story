@@ -9,7 +9,7 @@ class Config:
 
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + \
-        os.path.join(project_dir, 'static/data/data_register.sqlite')
+        os.path.join(project_dir, 'static/data/data.sqlite')
 
     SECRET_KEY = os.environ['SECRET_KEY']
 

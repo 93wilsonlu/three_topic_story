@@ -12,6 +12,7 @@ flask-mail = "*"
 flask-jwt-extended = "*"
 flask-bcrypt = "*"
 bootstrap-flask = "*"
+email-validator = "*"
 
 [dev-packages]
 autopep8 = "*"
