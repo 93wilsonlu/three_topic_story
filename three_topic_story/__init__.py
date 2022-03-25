@@ -6,9 +6,11 @@ from flask_migrate import Migrate
 from flask_mail import Mail
 from flask_login import LoginManager
 from flask_jwt_extended import JWTManager
+from .config import Config
 
 app = Flask(__name__)
 bootstrap = Bootstrap5(app)
+app.config.from_object(Config)
 
 # import all app
 from three_topic_story.main import main_blueprint
