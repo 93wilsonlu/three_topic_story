@@ -14,6 +14,7 @@ flask-bcrypt = "*"
 bootstrap-flask = "*"
 email-validator = "*"
 gunicorn = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 autopep8 = "*"
