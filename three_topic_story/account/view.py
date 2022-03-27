@@ -1,9 +1,9 @@
 from . import account
 from .form import FormRegister
 from .model import User
-from .. import app, db
+from .. import db
 from ..sendmail import send_mail
-from flask import redirect, render_template, flash, url_for
+from flask import redirect, render_template, flash, url_for, current_app
 
 
 @account.route('register', methods=['GET', 'POST'])
@@ -20,7 +20,7 @@ def register():
         #  產生用戶認證令牌
         token = user.create_confirm_token()
         #  寄出帳號啟動信件
-        send_mail(sender=app.config.get('MAIL_USERNAME'),
+        send_mail(sender=current_app.config.get('MAIL_USERNAME'),
                   recipients=[user.email],
                   subject='Activate your account',
                   template='account/mail/confirm_mail',

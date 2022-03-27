@@ -1,16 +1,10 @@
 import os
 import datetime
 
+project_dir = os.path.abspath(os.path.dirname(__file__))
+
 
 class Config:
-    project_dir = os.path.abspath(os.path.dirname(__file__))
-
-    DEBUG = True
-
-    SQLALCHEMY_TRACK_MODIFICATIONS = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + \
-        os.path.join(project_dir, 'static/data/data.sqlite')
-
     SECRET_KEY = os.environ['SECRET_KEY']
 
     MAIL_SERVER = 'smtp.gmail.com'
@@ -26,3 +20,18 @@ class Config:
 
     UPLOADED_IMAGES_DEST = os.path.join(project_dir, 'static/img')
     UPLOADED_IMAGES_URL = '/static/img/'
+
+
+class DevelopmentConfig(Config):
+    DEBUG = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + \
+        os.path.join(project_dir, 'static/data/data.sqlite')
+
+
+class ProductionConfig(Config):
+    SQLALCHEMY_DATABASE_URI = os.environ['SQLALCHEMY_DATABASE_URI']
+
+
+config_dict = {'develop': DevelopmentConfig,
+               'product': ProductionConfig}

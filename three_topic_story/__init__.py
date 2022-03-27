@@ -6,23 +6,41 @@ from flask_migrate import Migrate
 from flask_mail import Mail
 from flask_login import LoginManager
 from flask_jwt_extended import JWTManager
-from .config import Config
+from .config import config_dict
+import click
 
-app = Flask(__name__)
-app.config.from_object(Config)
+db = SQLAlchemy()
+bootstrap = Bootstrap5()
+bcrypt = Bcrypt()
+migrate = Migrate()
+mail = Mail()
+login = LoginManager()
+jwt = JWTManager()
 
-db = SQLAlchemy(app)
-bootstrap = Bootstrap5(app)
-bcrypt = Bcrypt(app)
-migrate = Migrate(app, db)
-mail = Mail(app)
-login = LoginManager(app)
-jwt = JWTManager(app)
+from .commands import init_cli
 
-# import all app
-from three_topic_story.main import main
-app.register_blueprint(main)
-from three_topic_story.account import account
-app.register_blueprint(account, url_prefix='/account')
 
-from . import commands
+def create_app(config='develop'):
+    app = Flask(__name__)
+    app.config.from_object(config_dict[config])
+
+    db.init_app(app)
+    bootstrap.init_app(app)
+    bcrypt.init_app(app)
+    migrate.init_app(app, db)
+    mail.init_app(app)
+    login.init_app(app)
+    jwt.init_app(app)
+
+    from three_topic_story.main import main
+    app.register_blueprint(main)
+    from three_topic_story.account import account
+    app.register_blueprint(account, url_prefix='/account')
+
+    @app.shell_context_processor
+    def make_shell_context():
+        return dict(app=app, db=db)
+
+    init_cli(app)
+
+    return app

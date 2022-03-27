@@ -1,1 +1,1 @@
-web: gunicorn three_topic_story:app
+web: gunicorn manage.py:app
