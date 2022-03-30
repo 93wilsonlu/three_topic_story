@@ -15,6 +15,7 @@ bootstrap-flask = "*"
 email-validator = "*"
 gunicorn = "*"
 psycopg2-binary = "*"
+werkzeug = "~=2.0.0"
 
 [dev-packages]
 autopep8 = "*"
