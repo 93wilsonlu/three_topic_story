@@ -1,5 +1,6 @@
 .vscode
-setup.sh
+run.sh
 __pycache__
 data
 deploy.sh
+.pytest_cache

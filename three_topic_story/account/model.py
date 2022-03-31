@@ -17,11 +17,6 @@ class User(UserMixin, db.Model):
     regist_date = db.Column(db.DateTime(), default=datetime.utcnow)
     last_login = db.Column(db.DateTime(), default=datetime.utcnow)
 
-    def __init__(self, username, email, password):
-        self.username = username
-        self.email = email
-        self.password = password
-
     @property
     def password(self):
         raise AttributeError('password is not a readable attribute')
@@ -39,9 +34,6 @@ class User(UserMixin, db.Model):
 
     def create_confirm_token(self):
         return create_access_token(identity={'user_id': self.id})
-
-    def create_reset_token(self):
-        return create_access_token(identity={'reset_id': self.id})
 
     def validate_confirm_token(self, token):
         try:

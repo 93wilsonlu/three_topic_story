@@ -32,6 +32,10 @@ def create_app(config='develop'):
     login.init_app(app)
     jwt.init_app(app)
 
+    @app.context_processor
+    def inject_variable():
+        return dict(url=app.config['URL']) 
+
     from three_topic_story.main import main
     app.register_blueprint(main)
     from three_topic_story.account import account

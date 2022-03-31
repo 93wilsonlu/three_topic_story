@@ -16,7 +16,7 @@ def send_mail(sender, recipients, subject, template, mailtype='html', **kwargs):
     elif mailtype == 'body':
         msg.body = template
 
-    #  使用多線程
+    # 使用多線程
     thr = Thread(target=send_async_email, args=[app, msg])
     thr.start()
     return thr

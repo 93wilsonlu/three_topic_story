@@ -20,6 +20,7 @@ class Config:
 
     UPLOADED_IMAGES_DEST = os.path.join(project_dir, 'static/img')
     UPLOADED_IMAGES_URL = '/static/img/'
+    URL = '127.0.0.1:5000'
 
 
 class DevelopmentConfig(Config):
@@ -39,6 +40,7 @@ class TestConfig(Config):
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
+    URL = 'three_topic_story.herokuapp.com'
 
 
 config_dict = {'develop': DevelopmentConfig, 'test': TestConfig,
