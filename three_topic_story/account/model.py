@@ -17,6 +17,11 @@ class User(UserMixin, db.Model):
     regist_date = db.Column(db.DateTime(), default=datetime.utcnow)
     last_login = db.Column(db.DateTime(), default=datetime.utcnow)
 
+    def __init__(self, username, email, password):
+        self.username = username
+        self.email = email
+        self.password = password
+
     @property
     def password(self):
         raise AttributeError('password is not a readable attribute')

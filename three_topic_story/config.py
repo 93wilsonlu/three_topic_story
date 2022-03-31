@@ -29,9 +29,17 @@ class DevelopmentConfig(Config):
         os.path.join(project_dir, 'static/data/data.sqlite')
 
 
+class TestConfig(Config):
+    DEBUG = True
+    WTF_CSRF_ENABLED = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + \
+        os.path.join(project_dir, 'static/data/data_test.sqlite')
+
+
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
 
 
-config_dict = {'develop': DevelopmentConfig,
+config_dict = {'develop': DevelopmentConfig, 'test': TestConfig,
                'product': ProductionConfig}

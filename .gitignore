@@ -2,3 +2,4 @@
 setup.sh
 __pycache__
 data
+deploy.sh
