@@ -1,5 +1,5 @@
 from . import account
-from .form import FormRegister, FormLogin
+from .form import FormRegister, FormLogin, FormSetting
 from .model import User
 from .. import db
 from ..sendmail import send_mail
@@ -80,6 +80,23 @@ def login():
         else:
             flash('帳號/密碼錯誤')
     return render_template('account/login.html', form=form)
+
+
+@account.route('/setting', methods=['GET', 'POST'])
+def setting():
+    form = FormSetting()
+    if form.validate_on_submit():
+        current_user.email = form.email.data
+        current_user.username = form.username.data
+        current_user.about_me = form.about_me.data
+        db.session.add(current_user)
+        db.session.commit()
+        flash('更新成功')
+        return redirect(url_for('account.setting'))
+    form.email.data = current_user.email
+    form.username.data = current_user.username
+    form.about_me.data = current_user.about_me
+    return render_template('account/setting.html', form=form)
 
 
 @account.before_app_request
