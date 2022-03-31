@@ -1,10 +1,10 @@
 from . import account
-from .form import FormRegister
+from .form import FormRegister, FormLogin
 from .model import User
 from .. import db
 from ..sendmail import send_mail
 from flask import redirect, render_template, flash, url_for, current_app, request
-from flask_login import login_required, current_user
+from flask_login import login_required, current_user, login_user, logout_user
 
 
 @account.route('register', methods=['GET', 'POST'])
@@ -18,7 +18,7 @@ def register():
         )
         db.session.add(user)
         db.session.commit()
-        
+
         token = user.create_confirm_token()
         send_mail(sender=current_app.config.get('MAIL_USERNAME'),
                   recipients=[user.email],
@@ -43,8 +43,8 @@ def user_confirm(token):
         db.session.add(user)
         db.session.commit()
         flash('驗證成功')
-        flash('請重新登入您的帳號')
-        # TODO: logout
+        if not current_user.is_authenticated:
+            flash('請重新登入您的帳號')
     else:
         flash('無效的網址')
     return redirect(url_for('main.index'))
@@ -63,6 +63,23 @@ def resend_confirm_email():
               token=token)
     flash('確認信已送出，請查看您的信箱')
     return redirect(url_for('main.index'))
+
+
+@account.route('/login', methods=['GET', 'POST'])
+def login():
+    form = FormLogin()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            if user.check_password(form.password.data):
+                login_user(user, form.remember_me.data)
+                next = request.args.get('next')
+                return redirect(next or url_for('main.index'))
+            else:
+                flash('帳號/密碼錯誤')
+        else:
+            flash('帳號/密碼錯誤')
+    return render_template('account/login.html', form=form)
 
 
 @account.before_app_request
