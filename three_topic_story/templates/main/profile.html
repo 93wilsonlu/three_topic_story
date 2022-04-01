@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ target_user.username }}
+{% endblock title %}
+
+
+{% block content %}
+<p>{{ target_user.username }}</p>
+<p>{{ target_user.email }}</p>
+<p>{{ target_user.about_me }}</p>
+{% endblock content %}
