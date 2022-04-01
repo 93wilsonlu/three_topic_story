@@ -70,3 +70,26 @@ class FormChangePassword(FlaskForm):
         validators.DataRequired()
     ])
     submit = SubmitField('送出')
+
+class FormForgotPassword(FlaskForm):
+    email = EmailField('信箱', validators=[
+        validators.DataRequired(),
+        validators.Length(5, 30),
+        validators.Email()
+    ])
+    submit = SubmitField('送出')
+
+    def validate_email(self, field):
+        if not User.query.filter_by(email=field.data).first():
+            raise ValidationError('帳號不存在')
+
+class FormResetPassword(FlaskForm):
+    password = PasswordField('密碼', validators=[
+        validators.DataRequired(),
+        validators.Length(5, 10),
+        validators.EqualTo('password2', message='密碼不相同')
+    ])
+    password2 = PasswordField('確認密碼', validators=[
+        validators.DataRequired()
+    ])
+    submit = SubmitField('重設密碼')

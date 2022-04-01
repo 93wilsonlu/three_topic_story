@@ -1,5 +1,5 @@
 from . import account
-from .form import FormRegister, FormLogin, FormSetting, FormChangePassword
+from .form import FormRegister, FormLogin, FormSetting, FormChangePassword, FormForgotPassword, FormResetPassword
 from .model import User
 from .. import db
 from ..sendmail import send_mail
@@ -122,3 +122,51 @@ def logout():
     logout_user()
     flash('登出成功')
     return redirect(url_for('main.index'))
+
+
+@account.route('/forgot_password', methods=['GET', 'POST'])
+def forgot_password():
+    if not current_user.is_anonymous:
+        return redirect(url_for('main.index'))
+
+    form = FormForgotPassword()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            token = user.create_confirm_token()
+            send_mail(sender=current_app.config.get('MAIL_USERNAME'),
+                      recipients=[user.email],
+                      subject='Reset Your Password',
+                      template='account/mail/reset_password_mail',
+                      mailtype='html',
+                      user=current_user,
+                      token=token)
+            flash('已送出，請確認您的信箱')
+            return redirect(url_for('account.login'))
+    return render_template('account/forgot_password.html', form=form)
+
+
+@account.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    if not current_user.is_anonymous:
+        return redirect(url_for('main.index'))
+
+    form = FormResetPassword()
+    user = User()
+    data = user.validate_confirm_token(token)
+
+    if not data:
+        flash('無效的網址')
+        return redirect(url_for('main.index'))
+
+    user = User.query.filter_by(id=data.get('user_id')).first()
+    if not user:
+        flash('帳戶不存在')
+        return redirect(url_for('main.index'))
+        
+    if form.validate_on_submit():
+        user.password = form.password.data
+        db.session.commit()
+        flash('已重設您的密碼，請重新登入')
+        return redirect(url_for('account.login'))
+    return render_template('account/reset_password.html', form=form)

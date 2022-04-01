@@ -2,7 +2,7 @@ from flask_login import current_user
 from flask import request, flash, redirect, url_for, render_template
 
 def init_errorhandler(app):
-    @app.before_app_request
+    @app.before_request
     def before_request():
         if (current_user.is_authenticated and
                 not current_user.confirm and
