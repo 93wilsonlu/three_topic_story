@@ -1,5 +1,5 @@
 from . import account
-from .form import FormRegister, FormLogin, FormSetting
+from .form import FormRegister, FormLogin, FormSetting, FormChangePassword
 from .model import User
 from .. import db
 from ..sendmail import send_mail
@@ -97,6 +97,30 @@ def setting():
     form.username.data = current_user.username
     form.about_me.data = current_user.about_me
     return render_template('account/setting.html', form=form)
+
+
+@account.route('/change_password', methods=['GET', 'POST'])
+@login_required
+def changepassword():
+    form = FormChangePassword()
+    if form.validate_on_submit():
+        if current_user.check_password(form.old_password.data):
+            current_user.password = form.password.data
+            db.session.add(current_user)
+            db.session.commit()
+            flash('更新成功')
+            return redirect(url_for('account.change_password'))
+        else:
+            flash('舊密碼錯誤')
+    return render_template('account/change_password.html', form=form)
+
+
+@account.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('登出成功')
+    return redirect(url_for('main.index'))
 
 
 @account.before_app_request

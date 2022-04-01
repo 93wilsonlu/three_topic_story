@@ -54,3 +54,19 @@ class FormSetting(FlaskForm):
     def validate_username(self, field):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('用戶名已被使用')
+
+
+class FormChangePassword(FlaskForm):
+    old_password = PasswordField('舊密碼', validators=[
+        validators.DataRequired(),
+        validators.Length(5, 10),
+    ])
+    password = PasswordField('新密碼', validators=[
+        validators.DataRequired(),
+        validators.Length(5, 10),
+        validators.EqualTo('password2', message='密碼不相同')
+    ])
+    password2 = PasswordField('確認密碼', validators=[
+        validators.DataRequired()
+    ])
+    submit = SubmitField('送出')
