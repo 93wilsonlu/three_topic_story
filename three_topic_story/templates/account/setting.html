@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% from 'bootstrap5/form.html' import render_form %}
+
+{% block title %}設定{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>設定</h1>
+</div>
+<div class="col-md-4">
+    {{ render_form(form) }}
+</div>
+{% if not current_user.confirm %}
+    <a href="{{ url_for('account.resend_confirm_email') }}">重送驗證信</a>
+{% endif %}
+{% endblock %}

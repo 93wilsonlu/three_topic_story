@@ -53,16 +53,17 @@ def user_confirm(token):
 @account.route('/resend_confirm_email')
 @login_required
 def resend_confirm_email():
-    token = current_user.create_confirm_token()
-    send_mail(sender=current_app.config.get('MAIL_USERNAME'),
-              recipients=[current_user.email],
-              subject='驗證您的帳戶',
-              template='account/mail/confirm_mail',
-              mailtype='html',
-              user=current_user,
-              token=token)
-    flash('確認信已送出，請查看您的信箱')
-    return redirect(url_for('main.index'))
+    if not current_user.confirm:
+        token = current_user.create_confirm_token()
+        send_mail(sender=current_app.config.get('MAIL_USERNAME'),
+                  recipients=[current_user.email],
+                  subject='驗證您的帳戶',
+                  template='account/mail/confirm_mail',
+                  mailtype='html',
+                  user=current_user,
+                  token=token)
+        flash('確認信已送出，請查看您的信箱')
+    return redirect(url_for('account.setting'))
 
 
 @account.route('/login', methods=['GET', 'POST'])
@@ -127,7 +128,9 @@ def logout():
 def before_request():
     if (current_user.is_authenticated and
             not current_user.confirm and
-            request.endpoint not in ['resend_confirm_email', 'logout', 'user_confirm'] and
+            request.endpoint != 'main.index' and 
+            'account' not in request.endpoint and
             request.endpoint != 'static'):
         flash('請驗證您的帳號')
-        return redirect(url_for('resend_confirm_email'))
+        current_app.logger.info(request.endpoint)
+        return redirect(url_for('account.setting'))
