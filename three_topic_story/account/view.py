@@ -101,7 +101,7 @@ def setting():
 
 @account.route('/change_password', methods=['GET', 'POST'])
 @login_required
-def changepassword():
+def change_password():
     form = FormChangePassword()
     if form.validate_on_submit():
         if current_user.check_password(form.old_password.data):
