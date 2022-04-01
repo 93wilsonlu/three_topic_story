@@ -122,15 +122,3 @@ def logout():
     logout_user()
     flash('登出成功')
     return redirect(url_for('main.index'))
-
-
-@account.before_app_request
-def before_request():
-    if (current_user.is_authenticated and
-            not current_user.confirm and
-            request.endpoint != 'main.index' and 
-            'account' not in request.endpoint and
-            request.endpoint != 'static'):
-        flash('請驗證您的帳號')
-        current_app.logger.info(request.endpoint)
-        return redirect(url_for('account.setting'))

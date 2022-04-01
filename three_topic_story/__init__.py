@@ -18,6 +18,7 @@ login = LoginManager()
 jwt = JWTManager()
 
 from .commands import init_cli
+from .errorhandler import init_errorhandler
 
 
 def create_app(config='develop'):
@@ -46,5 +47,6 @@ def create_app(config='develop'):
         return dict(app=app, db=db)
 
     init_cli(app)
+    init_errorhandler(app)
 
     return app
