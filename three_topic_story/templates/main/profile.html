@@ -9,4 +9,10 @@
 <p>{{ target_user.username }}</p>
 <p>{{ target_user.email }}</p>
 <p>{{ target_user.about_me }}</p>
+
+{% for post in target_user.post_list %}
+    {% if not post.private or current_user == target_user %}
+        <a href="{{ url_for('post.read_post', id=post.id) }}">{{ post.title }}</a>
+    {% endif %}
+{% endfor %}
 {% endblock content %}
