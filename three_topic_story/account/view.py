@@ -28,7 +28,7 @@ def register():
                   user=user,
                   token=token)
 
-        flash('註冊成功，請確認您的信箱')
+        flash('註冊成功，請確認您的信箱', 'success')
         return redirect(url_for('main.index'))
     return render_template('account/register.html', form=form)
 
@@ -42,11 +42,11 @@ def user_confirm(token):
         user.confirm = True
         db.session.add(user)
         db.session.commit()
-        flash('驗證成功')
+        flash('驗證成功', 'success')
         if not current_user.is_authenticated:
-            flash('請重新登入您的帳號')
+            flash('請重新登入您的帳號', 'warning')
     else:
-        flash('無效的網址')
+        flash('無效的網址', 'error')
     return redirect(url_for('main.index'))
 
 
@@ -77,9 +77,9 @@ def login():
                 next = request.args.get('next')
                 return redirect(next or url_for('main.index'))
             else:
-                flash('帳號/密碼錯誤')
+                flash('帳號/密碼錯誤', 'error')
         else:
-            flash('帳號/密碼錯誤')
+            flash('帳號/密碼錯誤', 'error')
     return render_template('account/login.html', form=form)
 
 
@@ -92,7 +92,7 @@ def setting():
         current_user.about_me = form.about_me.data
         db.session.add(current_user)
         db.session.commit()
-        flash('更新成功')
+        flash('更新成功', 'success')
         return redirect(url_for('account.setting'))
     form.email.data = current_user.email
     form.username.data = current_user.username
@@ -109,10 +109,10 @@ def change_password():
             current_user.password = form.password.data
             db.session.add(current_user)
             db.session.commit()
-            flash('更新成功')
+            flash('更新成功', 'success')
             return redirect(url_for('account.change_password'))
         else:
-            flash('舊密碼錯誤')
+            flash('舊密碼錯誤', 'error')
     return render_template('account/change_password.html', form=form)
 
 
@@ -120,7 +120,7 @@ def change_password():
 @login_required
 def logout():
     logout_user()
-    flash('登出成功')
+    flash('登出成功', 'success')
     return redirect(url_for('main.index'))
 
 
@@ -141,7 +141,7 @@ def forgot_password():
                       mailtype='html',
                       user=current_user,
                       token=token)
-            flash('已送出，請確認您的信箱')
+            flash('已送出，請確認您的信箱', 'success')
             return redirect(url_for('account.login'))
     return render_template('account/forgot_password.html', form=form)
 
@@ -156,17 +156,17 @@ def reset_password(token):
     data = user.validate_confirm_token(token)
 
     if not data:
-        flash('無效的網址')
+        flash('無效的網址', 'error')
         return redirect(url_for('main.index'))
 
     user = User.query.filter_by(id=data.get('user_id')).first()
     if not user:
-        flash('帳戶不存在')
+        flash('帳戶不存在', 'error')
         return redirect(url_for('main.index'))
         
     if form.validate_on_submit():
         user.password = form.password.data
         db.session.commit()
-        flash('已重設您的密碼，請重新登入')
+        flash('已重設您的密碼，請重新登入', 'success')
         return redirect(url_for('account.login'))
     return render_template('account/reset_password.html', form=form)

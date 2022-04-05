@@ -22,7 +22,7 @@ def new_post():
         )
         db.session.add(post)
         db.session.commit()
-        flash('完成')
+        flash('完成', 'success')
         return redirect(url_for('main.index'))
         # return redirect(url_for('post.read_post', id=post.id))
 

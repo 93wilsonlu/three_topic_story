@@ -9,7 +9,7 @@ def init_errorhandler(app):
                 request.endpoint != 'main.index' and
                 'account' not in request.endpoint and
                 request.endpoint != 'static'):
-            flash('請驗證您的帳號')
+            flash('請驗證您的帳號', 'warning')
             return redirect(url_for('account.setting'))
 
     @app.errorhandler(404)
@@ -18,5 +18,5 @@ def init_errorhandler(app):
 
     @app.errorhandler(401)
     def unauthorized(e):
-        flash('請先登入')
+        flash('請先登入', 'warning')
         return redirect(url_for('account.login'))
