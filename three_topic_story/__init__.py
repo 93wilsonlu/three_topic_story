@@ -17,6 +17,11 @@ mail = Mail()
 login = LoginManager()
 jwt = JWTManager()
 
+tags = []
+with open('three_topic_story/static/wordlist.txt', 'r') as f:
+    for word in f:
+        tags.append(word[:-1])
+
 from .commands import init_cli
 from .errorhandler import init_errorhandler
 
@@ -35,12 +40,14 @@ def create_app(config='develop'):
 
     @app.context_processor
     def inject_variable():
-        return dict(url=app.config['URL']) 
+        return dict(url=app.config['URL'])
 
     from three_topic_story.main import main
     app.register_blueprint(main)
     from three_topic_story.account import account
     app.register_blueprint(account, url_prefix='/account')
+    from three_topic_story.post import post
+    app.register_blueprint(post, url_prefix='/post')
 
     @app.shell_context_processor
     def make_shell_context():

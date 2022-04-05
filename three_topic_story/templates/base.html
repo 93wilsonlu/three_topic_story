@@ -27,7 +27,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <a class="btn btn-success" href="{{ url_for('main.index') }}">開始寫作</a>
+            <a class="btn btn-success" href="{{ url_for('post.new_post') }}">開始寫作</a>
           </ul>
           <ul class="navbar-nav">
             {% if current_user.is_authenticated %}

@@ -17,6 +17,8 @@ class User(UserMixin, db.Model):
     regist_date = db.Column(db.DateTime(), default=datetime.utcnow)
     last_login = db.Column(db.DateTime(), default=datetime.utcnow)
 
+    post_list = db.relationship('Post', backref='user')
+
     @property
     def password(self):
         raise AttributeError('password is not a readable attribute')

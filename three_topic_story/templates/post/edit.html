@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% from 'bootstrap5/form.html' import render_form %}
+
+{% block title %}
+{% if is_new %}
+新故事
+{% else %}
+編輯故事
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>
+    {% if is_new %}
+    新故事
+    {% else %}
+    編輯故事
+    {% endif %}
+    </h1>
+</div>
+<div class="col-md-4">
+    {{ tags_string }}
+    {{ render_form(form) }}
+</div>
+{% endblock %}
