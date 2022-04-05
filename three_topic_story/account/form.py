@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import validators, EmailField, PasswordField, StringField, SubmitField, BooleanField, ValidationError
+from wtforms import validators, EmailField, PasswordField, StringField, SubmitField, BooleanField, TextAreaField, ValidationError
 from .model import User
 
 
@@ -44,7 +44,7 @@ class FormSetting(FlaskForm):
         '用戶名', validators=[validators.DataRequired()])
     email = EmailField('信箱', validators=[validators.DataRequired(
     ), validators.Email()])
-    about_me = StringField('我的簡介')
+    about_me = TextAreaField('我的簡介')
     submit = SubmitField('更新')
 
     def validate_email(self, field):

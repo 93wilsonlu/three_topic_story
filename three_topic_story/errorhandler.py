@@ -15,3 +15,8 @@ def init_errorhandler(app):
     @app.errorhandler(404)
     def page_not_found(e):
         return render_template('404.html'), 404
+
+    @app.errorhandler(401)
+    def unauthorized(e):
+        flash('請先登入')
+        return redirect(url_for('account.login'))
