@@ -36,6 +36,7 @@ def create_app(config='develop'):
     migrate.init_app(app, db)
     mail.init_app(app)
     login.init_app(app)
+    login.login_view = 'account.login'
     jwt.init_app(app)
 
     @app.context_processor
