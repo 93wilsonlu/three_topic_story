@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% from 'bootstrap5/form.html' import render_form %}
+
+{% block title %}
+{{ post.title }}
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>
+    {{ post.title }}
+    </h1>
+</div>
+<div class="col-md-4">
+    {{ post.body }}
+    <div>作者: {{ post.author.username }}</div>
+    <div>創建時間: {{ post.create_date.strftime('%Y-%m-%d') }}</div>
+    <div>上次編輯: {{ post.edit_date.strftime('%Y-%m-%d') }}</div>
+</div>
+{% endblock %}

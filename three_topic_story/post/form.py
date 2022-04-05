@@ -14,6 +14,6 @@ class FormEditPost(FlaskForm):
     ])
 
     tags = HiddenField('tags')
-    private = BooleanField('private')
+    private = BooleanField('不公開')
 
     submit = SubmitField('Submit Post')

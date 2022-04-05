@@ -17,7 +17,7 @@ class User(UserMixin, db.Model):
     regist_date = db.Column(db.DateTime(), default=datetime.utcnow)
     last_login = db.Column(db.DateTime(), default=datetime.utcnow)
 
-    post_list = db.relationship('Post', backref='user')
+    post_list = db.relationship('Post', backref='author')
 
     @property
     def password(self):
