@@ -66,4 +66,17 @@ def edit_post(id):
     form.body.data = post.body
     form.private.data = post.private
 
-    return render_template('post/edit_post.html', form=form, tags_string=tags_string, is_new=False)
+    return render_template('post/edit_post.html', form=form, tags_string=tags_string, is_new=False, post=post)
+
+
+@post.route('/delete_post/<int:id>', methods=['GET', 'POST'])
+@login_required
+def delete_post(id):
+    post = Post.query.filter_by(id=id).first_or_404()
+    if post.author_id != current_user.id:
+        flash('這不是您的文章', 'warning')
+        return redirect(url_for('main.index'))
+    db.session.delete(post)
+    db.session.commit()
+    flash('刪除成功', 'success')
+    return redirect(url_for('main.index'))
