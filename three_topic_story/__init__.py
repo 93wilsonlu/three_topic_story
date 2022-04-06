@@ -37,6 +37,7 @@ def create_app(config='develop'):
     mail.init_app(app)
     login.init_app(app)
     login.login_view = 'account.login'
+    login.login_message = '請先登入您的帳號'
     jwt.init_app(app)
 
     @app.context_processor
