@@ -16,7 +16,7 @@ email-validator = "*"
 gunicorn = "*"
 psycopg2-binary = "*"
 werkzeug = "~=2.0.0"
-flask-uploads = "*"
+flask-reuploaded = "*"
 
 [dev-packages]
 autopep8 = "*"
