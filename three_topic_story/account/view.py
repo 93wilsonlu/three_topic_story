@@ -11,6 +11,8 @@ import time
 
 @account.route('register', methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
     form = FormRegister()
     if form.validate_on_submit():
         user = User(
@@ -70,6 +72,8 @@ def resend_confirm_email():
 
 @account.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
     form = FormLogin()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -86,6 +90,7 @@ def login():
 
 
 @account.route('/setting', methods=['GET', 'POST'])
+@login_required
 def setting():
     form = FormSetting()
     if form.validate_on_submit():
