@@ -5,7 +5,7 @@ from datetime import datetime
 class Post(db.Model):
     __tablename__ = 'Post'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(80))
+    title = db.Column(db.String(20))
     tags = db.Column(db.String(20))
     body = db.Column(db.Text())
     author_id = db.Column(db.Integer, db.ForeignKey('User.id'))

@@ -7,7 +7,7 @@ from flask_login import current_user
 class FormEditPost(FlaskForm):
     title = StringField('標題', validators=[
         validators.DataRequired(),
-        validators.Length(1, 80)
+        validators.Length(1, 20)
     ])
     body = TextAreaField('內容', validators=[
         validators.DataRequired()

@@ -8,15 +8,18 @@ from flask_login import current_user
 
 
 class FormRegister(FlaskForm):
-    username = StringField(
-        '用戶名', validators=[validators.DataRequired()])
+    username = StringField('用戶名', validators=[
+        validators.DataRequired(),
+        validators.Length(1, 30)
+    ])
     email = EmailField('信箱', validators=[
         validators.DataRequired(),
-        validators.Email()
+        validators.Email(),
+        validators.Length(1, 50)
     ])
     password = PasswordField('密碼', validators=[
         validators.DataRequired(),
-        validators.Length(5, 10),
+        validators.Length(8, 20),
         validators.EqualTo('password2', message='密碼不相同')
     ])
     password2 = PasswordField('確認密碼', validators=[
@@ -36,7 +39,8 @@ class FormRegister(FlaskForm):
 class FormLogin(FlaskForm):
     email = EmailField('信箱', validators=[
         validators.DataRequired(),
-        validators.Email()
+        validators.Email(),
+        validators.Length(1, 50)
     ])
     password = PasswordField('密碼', validators=[
         validators.DataRequired()
@@ -48,10 +52,13 @@ class FormLogin(FlaskForm):
 class FormSetting(FlaskForm):
     email = EmailField('信箱', validators=[
         validators.DataRequired(),
-        validators.Email()
+        validators.Email(),
+        validators.Length(1, 50)
     ])
-    username = StringField(
-        '用戶名', validators=[validators.DataRequired()])
+    username = StringField('用戶名', validators=[
+        validators.DataRequired(),
+        validators.Length(1, 30)
+    ])
     about_me = TextAreaField('我的簡介')
     avatar = FileField('頭像', validators=[
         FileAllowed(uploads_images, '這不是圖片')
@@ -72,11 +79,10 @@ class FormSetting(FlaskForm):
 class FormChangePassword(FlaskForm):
     old_password = PasswordField('舊密碼', validators=[
         validators.DataRequired(),
-        validators.Length(5, 10),
     ])
     password = PasswordField('新密碼', validators=[
         validators.DataRequired(),
-        validators.Length(5, 10),
+        validators.Length(8, 20),
         validators.EqualTo('password2', message='密碼不相同')
     ])
     password2 = PasswordField('確認密碼', validators=[
@@ -88,7 +94,8 @@ class FormChangePassword(FlaskForm):
 class FormForgotPassword(FlaskForm):
     email = EmailField('信箱', validators=[
         validators.DataRequired(),
-        validators.Email()
+        validators.Email(),
+        validators.Length(1, 50)
     ])
     submit = SubmitField('送出')
 
@@ -100,7 +107,7 @@ class FormForgotPassword(FlaskForm):
 class FormResetPassword(FlaskForm):
     password = PasswordField('密碼', validators=[
         validators.DataRequired(),
-        validators.Length(5, 10),
+        validators.Length(8, 20),
         validators.EqualTo('password2', message='密碼不相同')
     ])
     password2 = PasswordField('確認密碼', validators=[
