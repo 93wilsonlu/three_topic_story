@@ -6,6 +6,7 @@
 
 
 {% block content %}
+<img src="{{ current_user.avatar_url }}" alt="">
 <p>{{ target_user.username }}</p>
 <p>{{ target_user.email }}</p>
 <p>{{ target_user.about_me }}</p>

@@ -4,3 +4,4 @@ __pycache__
 data
 deploy.sh
 .pytest_cache
+avatar

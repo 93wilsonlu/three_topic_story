@@ -22,6 +22,8 @@
 <div class="col-md-4">
     {{ tags_string }}
     {{ render_form(form) }}
-    <a href="{{ url_for('post.delete_post', id=post.id) }}">刪除</a>
+    {% if not is_new %}
+        <a href="{{ url_for('post.delete_post', id=post.id) }}">刪除</a>
+    {% endif %}
 </div>
 {% endblock %}

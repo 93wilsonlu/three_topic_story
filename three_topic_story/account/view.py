@@ -1,8 +1,8 @@
 from . import account
 from .form import FormRegister, FormLogin, FormSetting, FormChangePassword, FormForgotPassword, FormResetPassword
 from .model import User
-from .. import db
-from ..sendmail import send_mail
+from three_topic_story import db, uploads_images
+from three_topic_story.sendmail import send_mail
 from flask import redirect, render_template, flash, url_for, current_app, request
 from flask_login import login_required, current_user, login_user, logout_user
 
@@ -87,6 +87,10 @@ def login():
 def setting():
     form = FormSetting()
     if form.validate_on_submit():
+        if form.avatar.data:
+            file_name = uploads_images.save(form.avatar.data, folder='avatar',
+                                name=str(current_user.id) + '.')
+            current_user.avatar_url = uploads_images.url(file_name)
         current_user.email = form.email.data
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data
@@ -163,7 +167,7 @@ def reset_password(token):
     if not user:
         flash('帳戶不存在', 'error')
         return redirect(url_for('main.index'))
-        
+
     if form.validate_on_submit():
         user.password = form.password.data
         db.session.commit()

@@ -6,6 +6,7 @@ from flask_migrate import Migrate
 from flask_mail import Mail
 from flask_login import LoginManager
 from flask_jwt_extended import JWTManager
+from flask_uploads import UploadSet, IMAGES, configure_uploads
 from .config import config_dict
 import click
 
@@ -16,6 +17,7 @@ migrate = Migrate()
 mail = Mail()
 login = LoginManager()
 jwt = JWTManager()
+uploads_images = UploadSet(name='images', extensions=IMAGES)
 
 tags = []
 with open('three_topic_story/static/wordlist.txt', 'r') as f:
@@ -39,6 +41,7 @@ def create_app(config='develop'):
     login.login_view = 'account.login'
     login.login_message = '請先登入您的帳號'
     jwt.init_app(app)
+    configure_uploads(app, uploads_images)
 
     @app.context_processor
     def inject_variable():

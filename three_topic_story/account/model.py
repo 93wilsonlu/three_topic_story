@@ -1,4 +1,4 @@
-from .. import db, bcrypt, login
+from three_topic_story import db, bcrypt, login, uploads_images
 from flask_jwt_extended import create_access_token, decode_token
 from flask_login import UserMixin
 from datetime import datetime
@@ -14,6 +14,7 @@ class User(UserMixin, db.Model):
     confirm = db.Column(db.Boolean, default=False)
 
     about_me = db.Column(db.Text())
+    avatar_url = db.Column(db.String(30), unique=True, server_default='/static/img/default.png')
     regist_date = db.Column(db.DateTime(), default=datetime.utcnow)
     last_login = db.Column(db.DateTime(), default=datetime.utcnow)
 

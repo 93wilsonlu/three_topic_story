@@ -1,13 +1,19 @@
+from flask import current_app
 from flask_wtf import FlaskForm
 from wtforms import validators, EmailField, PasswordField, StringField, SubmitField, BooleanField, TextAreaField, ValidationError
+from flask_wtf.file import FileRequired, FileAllowed, FileField
 from .model import User
+from three_topic_story import uploads_images
+from flask_login import current_user
 
 
 class FormRegister(FlaskForm):
     username = StringField(
         '用戶名', validators=[validators.DataRequired()])
-    email = EmailField('信箱', validators=[validators.DataRequired(
-    ), validators.Email()])
+    email = EmailField('信箱', validators=[
+        validators.DataRequired(),
+        validators.Email()
+    ])
     password = PasswordField('密碼', validators=[
         validators.DataRequired(),
         validators.Length(5, 10),
@@ -40,19 +46,26 @@ class FormLogin(FlaskForm):
 
 
 class FormSetting(FlaskForm):
+    email = EmailField('信箱', validators=[
+        validators.DataRequired(),
+        validators.Email()
+    ])
     username = StringField(
         '用戶名', validators=[validators.DataRequired()])
-    email = EmailField('信箱', validators=[validators.DataRequired(
-    ), validators.Email()])
     about_me = TextAreaField('我的簡介')
+    avatar = FileField('頭像', validators=[
+        FileAllowed(uploads_images, '這不是圖片')
+    ])
     submit = SubmitField('更新')
 
     def validate_email(self, field):
-        if User.query.filter_by(email=field.data).first():
+        user = User.query.filter_by(email=field.data).first()
+        if user and user != current_user:
             raise ValidationError('信箱已被使用')
 
     def validate_username(self, field):
-        if User.query.filter_by(username=field.data).first():
+        user = User.query.filter_by(username=field.data).first()
+        if user and user != current_user:
             raise ValidationError('用戶名已被使用')
 
 
@@ -71,10 +84,10 @@ class FormChangePassword(FlaskForm):
     ])
     submit = SubmitField('送出')
 
+
 class FormForgotPassword(FlaskForm):
     email = EmailField('信箱', validators=[
         validators.DataRequired(),
-        validators.Length(5, 30),
         validators.Email()
     ])
     submit = SubmitField('送出')
@@ -82,6 +95,7 @@ class FormForgotPassword(FlaskForm):
     def validate_email(self, field):
         if not User.query.filter_by(email=field.data).first():
             raise ValidationError('帳號不存在')
+
 
 class FormResetPassword(FlaskForm):
     password = PasswordField('密碼', validators=[
