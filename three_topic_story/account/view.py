@@ -5,6 +5,8 @@ from three_topic_story import db, uploads_images
 from three_topic_story.sendmail import send_mail
 from flask import redirect, render_template, flash, url_for, current_app, request
 from flask_login import login_required, current_user, login_user, logout_user
+import hashlib
+import time
 
 
 @account.route('register', methods=['GET', 'POST'])
@@ -88,9 +90,13 @@ def setting():
     form = FormSetting()
     if form.validate_on_submit():
         if form.avatar.data:
+            alternative_name = current_user.username + str(time.time())
+            alternative_name = hashlib.md5(
+                alternative_name.encode('utf-8')).hexdigest()
             file_name = uploads_images.save(form.avatar.data, folder='avatar',
-                                name=str(current_user.id) + '.')
+                                            name=alternative_name + '.')
             current_user.avatar_url = uploads_images.url(file_name)
+
         current_user.email = form.email.data
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data

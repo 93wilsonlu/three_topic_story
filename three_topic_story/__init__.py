@@ -13,7 +13,7 @@ import click
 db = SQLAlchemy()
 bootstrap = Bootstrap5()
 bcrypt = Bcrypt()
-migrate = Migrate()
+migrate = Migrate(compare_type=True)
 mail = Mail()
 login = LoginManager()
 jwt = JWTManager()

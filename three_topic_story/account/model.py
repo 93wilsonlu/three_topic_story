@@ -14,7 +14,7 @@ class User(UserMixin, db.Model):
     confirm = db.Column(db.Boolean, default=False)
 
     about_me = db.Column(db.Text())
-    avatar_url = db.Column(db.String(30), unique=True, server_default='/static/img/default.png')
+    avatar_url = db.Column(db.String(60), unique=True, server_default='/static/img/default.png')
     regist_date = db.Column(db.DateTime(), default=datetime.utcnow)
     last_login = db.Column(db.DateTime(), default=datetime.utcnow)
 
