@@ -1,35 +1,44 @@
 {% from 'bootstrap4/pagination.html' import render_pager %}
 {% extends "base.html" %}
 {% block title %}
-    index
+  {{ super() }}-
+  文章列表
 {% endblock title %}
 {% block content %}
-    <ul class="list-group">
-        {% for post in posts.items %}
-            <li class="list-group-item">
-                <a href="{{ url_for('post.read_post', id=post.id) }}">{{ post.title }}</a>
+  <ul class="list-group mb-3">
+    {% for post in posts.items %}
+      <a href="{{ url_for('post.read_post', id=post.id) }}"
+         class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        <div class="fs-5">{{ post.title }}</div>
+        <div>
+          {% for tag in post.tags.split(',') %}
+            <span class="badge bg-primary">{{ tag }}</span>
+          {% endfor %}
+          &nbsp;
+          <small class="text-secondary">{{ post.edit_date.strftime('%Y-%m-%d') }}</small>
+        </div>
+      </a>
+    {% endfor %}
+  </ul>
+  {% if posts.pages > 1 %}
+    <ul class="pagination justify-content-center">
+      {% for page in posts.iter_pages(1, 2, 2, 1) %}
+        {% if page %}
+          {% if page != posts.page %}
+            <li class="page-item">
+              <a class="page-link" href="{{ url_for('main.post_list', page=page) }}">{{ page }}</a>
             </li>
-        {% endfor %}
+          {% else %}
+            <li class="page-item active">
+              <a class="page-link" href="{{ url_for('main.post_list', page=page) }}">{{ page }}</a>
+            </li>
+          {% endif %}
+        {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" href="#">...</a>
+          </li>
+        {% endif %}
+      {% endfor %}
     </ul>
-    <nav>
-        <ul class="pagination">
-            {% for page in posts.iter_pages(1, 2, 2, 1) %}
-                {% if page %}
-                    {% if page != posts.page %}
-                        <li class="page-item">
-                            <a class="page-link" href="{{ url_for('main.post_list', page=page) }}">{{ page }}</a>
-                        </li>
-                    {% else %}
-                        <li class="page-item active">
-                            <a class="page-link" href="{{ url_for('main.post_list', page=page) }}">{{ page }}</a>
-                        </li>
-                    {% endif %}
-                {% else %}
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#">...</a>
-                    </li>
-                {% endif %}
-            {% endfor %}
-        </ul>
-    </nav>
+  {% endif %}
 {% endblock content %}

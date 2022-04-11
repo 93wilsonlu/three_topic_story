@@ -1,7 +1,6 @@
-from flask import current_app
 from flask_wtf import FlaskForm
 from wtforms import validators, EmailField, PasswordField, StringField, SubmitField, BooleanField, TextAreaField, ValidationError
-from flask_wtf.file import FileRequired, FileAllowed, FileField
+from flask_wtf.file import FileAllowed, FileField
 from .model import User
 from three_topic_story import uploads_images
 from flask_login import current_user
@@ -45,8 +44,8 @@ class FormLogin(FlaskForm):
     password = PasswordField('密碼', validators=[
         validators.DataRequired()
     ])
-    remember_me = BooleanField('記得我')
-    submit = SubmitField('Log in')
+    remember_me = BooleanField('記得我', default=True)
+    submit = SubmitField('登入')
 
 
 class FormSetting(FlaskForm):
