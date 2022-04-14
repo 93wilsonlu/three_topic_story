@@ -1,7 +1,8 @@
 # 三題故事
 
 https://three-topic-story.herokuapp.com/
-不知道會有什麼漏洞，請打鞭小力一點
+
+不知道會有什麼漏洞，請鞭小力一點
 
 ## 工具
 ### 套件
@@ -9,7 +10,7 @@ https://three-topic-story.herokuapp.com/
 - Bootstrap5
 
 ### 部署位置
-- Heroku(Free and Hobby)
+- Heroku(Free)
 
 ### 資料庫
 - Heroku Postgres
