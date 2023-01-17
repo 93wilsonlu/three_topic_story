@@ -1,0 +1,13 @@
+flask
+flask-wtf
+flask-migrate
+flask-login
+flask-mail
+flask-jwt-extended
+flask-bcrypt
+bootstrap-flask
+email-validator
+gunicorn
+psycopg2-binary
+werkzeug~=2.0.0
+flask-reuploaded

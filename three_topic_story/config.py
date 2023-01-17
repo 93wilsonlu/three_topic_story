@@ -8,7 +8,7 @@ class Config:
     SECRET_KEY = os.environ['SECRET_KEY']
 
     MAIL_SERVER = 'smtp.gmail.com'
-    MAIL_PROT = 465
+    MAIL_PORT = 465
     MAIL_USE_TLS = True
     MAIL_USERNAME = os.environ['MAIL_USERNAME']
     MAIL_PASSWORD = os.environ['MAIL_PASSWORD']
@@ -40,7 +40,7 @@ class TestConfig(Config):
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
-    URL = 'three-topic-story.herokuapp.com'
+    URL = 'https://three-topic-story.onrender.com'
 
 
 config_dict = {'develop': DevelopmentConfig, 'test': TestConfig,
